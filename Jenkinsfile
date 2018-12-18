@@ -4,7 +4,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Running build automation'
-                archiveArtifacts artifacts: 'dist/http.zip'
+                
             }
         }
         stage('DeployToStaging') {
@@ -25,10 +25,9 @@ pipeline {
                                 ], 
                                 transfers: [
                                     sshTransfer(
-                                        sourceFiles: 'dist/http.zip',
-                                        removePrefix: 'dist/',
+                                        sourceFiles: 'index.html',
                                         remoteDirectory: '/tmp',
-                                        execCommand: 'sudo /usr/bin/systemctl stop httpd && rm -rf /var/www/html/* && unzip /tmp/http.zip -d /var/www/html/ && sudo /usr/bin/systemctl start httpd'
+                                        execCommand: 'sudo /usr/bin/systemctl stop httpd && rm -rf /var/www/html/* && cp /tmp/index.html /var/www/html/ && sudo /usr/bin/systemctl start httpd'
                                     )
                                 ]
                             )
@@ -57,10 +56,9 @@ pipeline {
                                 ], 
                                 transfers: [
                                     sshTransfer(
-                                        sourceFiles: 'dist/http.zip',
-                                        removePrefix: 'dist/',
+                                        sourceFiles: 'index.html',
                                         remoteDirectory: '/tmp',
-                                        execCommand: 'sudo /usr/bin/systemctl stop httpd && rm -rf /var/www/html/* && unzip /tmp/http.zip -d /var/www/html/ && sudo /usr/bin/systemctl start httpd'
+                                        execCommand: 'sudo /usr/bin/systemctl stop httpd && rm -rf /var/www/html/* && cp /tmp/index.html /var/www/html/ && sudo /usr/bin/systemctl start httpd'
                                     )
                                 ]
                             )
